@@ -1,0 +1,158 @@
+name: supply-chain-disruption-gym
+version: "1.0.0"
+description: >
+  A high-fidelity OpenEnv RL environment for training AI agents to handle
+  real-world supply chain disruptions. Simulates Indian manufacturing and
+  logistics supply chains with realistic crisis scenarios: supplier failures,
+  port congestion, multi-vendor crises, and partial information conditions.
+  Novel reward function grades decision accuracy, cost efficiency, speed,
+  and risk awareness simultaneously.
+
+author: "Supply Chain Gym — OpenEnv Hackathon 2026"
+license: Apache-2.0
+
+tags:
+  - supply-chain
+  - logistics
+  - india
+  - real-world
+  - multi-step
+  - partial-observability
+  - cost-efficiency
+  - agentic
+
+tasks:
+  - id: task1
+    name: "Single Supplier Failure"
+    difficulty: easy
+    description: >
+      Primary supplier goes offline. Agent selects best alternate supplier
+      balancing cost, lead time, and reliability. Clear optimal solution.
+    max_turns: 5
+    baseline_score: 0.65
+    reward_dimensions:
+      decision_accuracy: 0.35
+      cost_efficiency: 0.30
+      explanation_quality: 0.25
+      speed: 0.10
+
+  - id: task2
+    name: "Port Congestion + Deadline"
+    difficulty: medium
+    description: >
+      JNPT Mumbai congested. 3 shipments affected with different urgency levels.
+      Critical pharma shipment has a hard 2-day deadline. Agent must prioritise,
+      expedite/reroute/delay under strict budget constraint.
+    max_turns: 8
+    baseline_score: 0.38
+    reward_dimensions:
+      critical_item_handled: 0.35
+      cost_efficiency: 0.30
+      prioritisation: 0.25
+      explanation_quality: 0.10
+
+  - id: task3
+    name: "Multi-Vendor Crisis + Partial Info"
+    difficulty: hard
+    description: >
+      Two suppliers fail simultaneously. Inventory data is unknown.
+      Agent must use request_info tool calls, reason under uncertainty,
+      prevent production stoppage. Production stoppage penalty: ₹200,000/day.
+    max_turns: 12
+    baseline_score: 0.18
+    reward_dimensions:
+      info_gathering: 0.20
+      decision_quality: 0.25
+      cost_efficiency: 0.20
+      production_continuity: 0.20
+      risk_awareness: 0.15
+
+action_space:
+  type: discrete_with_parameters
+  actions:
+    - name: select_supplier
+      description: "Choose an alternate supplier by supplier_id"
+      parameters:
+        target_id: "string — supplier_id"
+        quantity: "int — units to order"
+        explanation: "string — reasoning for selection"
+
+    - name: reroute_shipment
+      description: "Reroute a delayed shipment via alternate route"
+      parameters:
+        target_id: "string — shipment_id"
+        explanation: "string"
+
+    - name: expedite_shipment
+      description: "Pay premium to expedite a critical shipment"
+      parameters:
+        target_id: "string — shipment_id"
+        explanation: "string"
+
+    - name: delay_order
+      description: "Accept delay penalty on a low-urgency order"
+      parameters:
+        target_id: "string — shipment_id"
+        delay_days: "int"
+        explanation: "string"
+
+    - name: request_info
+      description: "Request hidden information (Task 3 only)"
+      parameters:
+        query_key: "string — one of the available query keys"
+        explanation: "string"
+
+    - name: escalate_to_human
+      description: "Hand off to human supervisor"
+      parameters:
+        explanation: "string"
+
+    - name: split_order
+      description: "Split order across multiple suppliers"
+      parameters:
+        supplier_ids: "list[string]"
+        explanation: "string"
+
+observation_space:
+  turn: "int — current turn number"
+  task_id: "string"
+  disruption_type: "enum: supplier_failure | port_congestion | weather_delay | customs_hold | vehicle_breakdown | multi_failure"
+  disruption_description: "string — full crisis description"
+  available_suppliers: "list[Supplier] — id, name, location, cost_per_unit, lead_time_days, reliability_score, available"
+  affected_shipments: "list[Shipment] — id, origin, destination, cargo, quantity, deadline_days, urgency, cost_to_reroute, cost_to_expedite, delay_penalty"
+  warehouse_stocks: "list[WarehouseStock] — material, current_stock (-1=unknown), minimum_stock, daily_consumption, days_remaining"
+  budget_remaining: "float — INR"
+  time_remaining_days: "int"
+  partial_info: "bool — if true, some data is hidden and must be retrieved via request_info"
+  info_available: "dict — information revealed by prior request_info actions"
+  last_action_result: "string — result message from last action"
+  done: "bool"
+
+reward:
+  range: [0.0, 1.0]
+  terminal: true
+  description: >
+    Reward only given at episode end (terminal reward, compatible with GRPO).
+    Composed of weighted sub-scores measuring decision correctness,
+    cost efficiency, explanation quality, and risk awareness.
+    No intermediate rewards — agent must reason toward the final outcome.
+
+api:
+  protocol: http
+  websocket: /ws
+  endpoints:
+    reset: "POST /reset — {task_id, seed?} → {session_id, observation}"
+    step: "POST /step — {session_id, action_type, target_id?, parameters?, explanation} → {observation, reward, done, info}"
+    state: "GET /state/{session_id} → state snapshot"
+    tasks: "GET /tasks — list all tasks with descriptions"
+    health: "GET /health"
+
+docker:
+  base_image: python:3.11-slim
+  port: 7860
+  env:
+    PORT: "7860"
+
+deployment:
+  platform: huggingface-spaces
+  sdk: docker

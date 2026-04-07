@@ -1,0 +1,51 @@
+{
+  "task1": {
+    "task_id": "task1",
+    "success": true,
+    "final_reward": 0.725,
+    "score_breakdown": {
+      "decision_accuracy": 0.35,
+      "cost_efficiency": 0.3,
+      "explanation_quality": 0.07500000000000001,
+      "speed": 0.0
+    },
+    "total_cost": 300000.0,
+    "turns_taken": 5,
+    "production_stopped": false,
+    "explanation_quality": 0.07500000000000001,
+    "grader_feedback": "Correct supplier selected (optimal cost + reliability). | Cost-efficient decision \u2014 within 5% of optimal. | Explanation lacks sufficient reasoning."
+  },
+  "task2": {
+    "task_id": "task2",
+    "success": false,
+    "final_reward": 0.39,
+    "score_breakdown": {
+      "critical_item_handled": 0.35,
+      "cost_efficiency": 0.0,
+      "prioritisation": 0.0,
+      "explanation_quality": 0.04000000000000001
+    },
+    "total_cost": 138416.84999999998,
+    "turns_taken": 8,
+    "production_stopped": true,
+    "explanation_quality": 0.04000000000000001,
+    "grader_feedback": "Critical pharma shipment correctly expedited. | BUDGET EXCEEDED: \u20b9138,417 vs limit \u20b980,000."
+  },
+  "task3": {
+    "task_id": "task3",
+    "success": true,
+    "final_reward": 0.57,
+    "score_breakdown": {
+      "info_gathering": 0.2,
+      "decision_quality": 0.12,
+      "cost_efficiency": 0.1,
+      "production_continuity": 0.0,
+      "risk_awareness": 0.15
+    },
+    "total_cost": 0.0,
+    "turns_taken": 12,
+    "production_stopped": true,
+    "explanation_quality": 0.4,
+    "grader_feedback": "Excellent: 2 info requests made before deciding. | Escalated to human \u2014 appropriate under high uncertainty. | Underspent \u2014 may not have addressed all disruptions. | Production halted \u2014 no mitigation actions taken. | Good risk awareness shown in decisions/explanations."
+  }
+}
