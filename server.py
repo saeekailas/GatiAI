@@ -111,7 +111,7 @@ async def health_check():
 
 
 @app.post("/reset")
-def reset(req: ResetRequest):
+def reset(req: ResetRequest = ResetRequest()):
     """Start a new episode. Returns initial observation + session_id."""
     if len(_sessions) >= MAX_SESSIONS:
         # Evict oldest session
