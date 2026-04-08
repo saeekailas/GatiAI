@@ -37,7 +37,7 @@ else:
 
 
 app = FastAPI(
-    title="Supply Chain Disruption Gym",
+    title="GatiAI",
     description=(
         "OpenEnv-spec RL environment for training AI agents to handle "
         "real-world supply chain disruption scenarios. "
@@ -222,8 +222,8 @@ def list_tasks():
 @app.get("/metadata")
 def metadata():
     return {
-        "name": "GatiAI-Env",
-        "description": "Supply chain resilience simulation for Meta Hackathon"
+        "name": "GatiAI Logistics",
+        "description": "Supply chain crisis management environment for Indian logistics."
     }
 
 
