@@ -10,7 +10,7 @@ import uuid
 import asyncio
 from typing import Dict, Optional
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
@@ -111,8 +111,10 @@ async def health_check():
 
 
 @app.post("/reset")
-def reset(req: ResetRequest = ResetRequest()):
+def reset(req: Optional[ResetRequest] = Body(default=None)):
     """Start a new episode. Returns initial observation + session_id."""
+    if req is None:
+        req = ResetRequest()
     if len(_sessions) >= MAX_SESSIONS:
         # Evict oldest session
         oldest = next(iter(_sessions))
