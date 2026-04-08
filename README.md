@@ -57,6 +57,32 @@ docker build -t GatiAI
 docker run -p 7860:7860 GatiAI
 ```
 
+### Hugging Face Spaces
+
+This project is a REST-first OpenEnv environment with an interactive homepage at `/` and full API docs at `/docs`.
+
+If you deploy with Docker, make sure the Space uses port `7860`, and the container starts with:
+
+```bash
+uvicorn server:app --host 0.0.0.0 --port 7860
+```
+
+Open the Space URL in your browser to see the interactive environment landing page.
+
+---
+
+## Testing
+
+Run the test suite locally to verify the environment, API, and episode flow:
+
+```bash
+pytest
+```
+
+The test suite includes:
+- `tests/test_server.py` — API route and schema coverage
+- `tests/test_environment.py` — reset/step/state behavior for key tasks
+
 ---
 
 ## API Reference
@@ -70,7 +96,21 @@ curl -X POST http://localhost:7860/reset \
 ```
 
 Response includes `session_id` and initial `observation`.
+### Agent Evaluation Harness
 
+This project includes a reusable evaluation harness in `agent_evaluator.py` that runs any agent across all tasks, multiple random seeds, and returns a rich summary of performance.
+
+```bash
+python3 agent_evaluator.py
+```
+
+The evaluator reports:
+- `average_reward` per task and aggregate
+- `success_rate` per task and aggregate
+- full `episode_result` breakdown for every run
+- action history for each episode
+
+Use `RuleBasedAgent` from `baseline.py` as a reference implementation for best-practice testing.
 ### Step — execute one action
 
 ```bash
