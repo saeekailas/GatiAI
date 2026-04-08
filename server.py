@@ -106,7 +106,7 @@ def _parse_action(req: StepRequest) -> SCAction:
 # ─── REST endpoints ───────────────────────────────────────────────────────────
 
 @app.get("/health")
-def health():
+async def health_check():
     return {"status": "healthy", "active_sessions": len(_sessions)}
 
 

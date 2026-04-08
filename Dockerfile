@@ -7,20 +7,17 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for layer caching
+# Copy requirements first
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# FIX: Ensure we have the latest pip to avoid the version errors you saw earlier
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy all source files
-COPY models.py scenarios.py graders.py environment.py server.py baseline.py openenv.yaml ./
+COPY . . 
 
 # HuggingFace Spaces uses port 7860
 ENV PORT=7860
 EXPOSE 7860
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:7860/health || exit 1
-
-# Run the OpenEnv server
-CMD ["bash", "-lc", "uvicorn server:app --host 0.0.0.0 --port ${PORT:-7860} --workers 4"]
+# Simplified CMD: Direct execution is more reliable in Docker than bash strings
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "1"]
