@@ -3,7 +3,6 @@
 **An OpenEnv RL environment for training AI agents to handle real-world Indian supply chain crises.**
 
 Built for the **Meta/HuggingFace OpenEnv Hackathon 2026** | Statement 2: Package using OpenEnv for automated evaluation.
-
 ---
 
 ## What This Solves
