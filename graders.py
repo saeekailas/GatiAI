@@ -6,7 +6,6 @@ This is the research contribution — no other OpenEnv environment grades cost e
 from __future__ import annotations
 from typing import Dict, List, Any, Optional
 from models import SCAction, ActionType, EpisodeResult
-
 # ─── Base grader ──────────────────────────────────────────────────────────────
 
 class BaseGrader:
