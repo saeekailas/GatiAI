@@ -1,4 +1,4 @@
-# Supply Chain Disruption Gym 🏭
+# Supply Chain Disruption Gym 🏭 
 
 **An OpenEnv RL environment for training AI agents to handle real-world Indian supply chain crises.**
 
