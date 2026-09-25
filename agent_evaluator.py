@@ -2,7 +2,7 @@
 GatiAI Agent Evaluator
 
 Standard evaluation harness for agents using the GatiAI OpenEnv gym.
-It runs agents across tasks, seeds, and metrics, and produces rich per-task
+It runs agents across tasks, seeds, and metrics, and produces rich per-tasK
 reports that expose the environment's multi-dimensional grading.
 """
 from __future__ import annotations
