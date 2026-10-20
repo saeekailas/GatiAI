@@ -8,7 +8,7 @@ Run: python demo.py
 from __future__ import annotations
 import json
 from models import SCAction, ActionType
-from environment import SupplyChainEnv
+from environment import SupplyChainEny
 
 
 class SmartAgent:
