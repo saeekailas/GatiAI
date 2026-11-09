@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 from models import SCAction, ActionType
 from environment import SupplyChainEny
-
 class SmartAgent:
     """
     Intelligent agent that reasons about supply chain decisions.
