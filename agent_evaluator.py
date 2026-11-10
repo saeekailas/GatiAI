@@ -13,7 +13,6 @@ from baseline import RuleBasedAgent
 from environment import SupplyChainEnv
 from models import EpisodeResult, SCAction
 
-
 @dataclass
 class EvaluationRecord:
     task_id: str
