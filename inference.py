@@ -13,7 +13,6 @@ from environment import SupplyChainEnv
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o")
 HF_TOKEN = os.getenv("HF_TOKEN")  # This is the OpenAI API key
-
 if not HF_TOKEN:
     raise ValueError("HF_TOKEN environment variable is required")
 
