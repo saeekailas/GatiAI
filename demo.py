@@ -2,7 +2,6 @@
 GatiAI Demo Script
 Interactive demonstration of the Supply Chain Disruption Gym.
 Shows how agents interact with the environment and get graded.
-
 Run: python demo.py
 """
 from __future__ import annotations
