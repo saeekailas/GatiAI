@@ -8,7 +8,6 @@ COPY requirements.txt .
 
 # Install dependencies using uv
 RUN uv pip install --system --no-cache -r requirements.txt
-
 # Copy source code
 COPY . .
 
